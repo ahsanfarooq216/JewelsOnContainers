@@ -22,7 +22,7 @@ namespace WebMvc.Controllers
             var itemsOnPage = 8;
 
             var catalog = await _service.GetCatalogItemsAsync(page ?? 0, itemsOnPage, brandFilterApplied, typesFilterApplied);
-
+            var actualItemsOnPage = Math.Min((int)(catalog.Count - ((page ?? 0) * itemsOnPage)), itemsOnPage);
             var vm = new CatalogIndexViewModel
             {
                 CatalogItems = catalog.Data,
@@ -31,8 +31,7 @@ namespace WebMvc.Controllers
                 PaginationInfo = new PaginationInfo
                 {
                     ActualPage = page ?? 0,
-                    //ItemsPerPage = itemsOnPage,
-                    ItemsPerPage = catalog.PageSize,
+                    ItemsPerPage = actualItemsOnPage,
                     TotalItems = catalog.Count,
                     TotalPages = (int)Math.Ceiling((decimal)catalog.Count / itemsOnPage)
                 },
