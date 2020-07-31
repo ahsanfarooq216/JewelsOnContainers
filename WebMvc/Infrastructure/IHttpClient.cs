@@ -11,18 +11,18 @@ namespace WebMvc.Infrastructure
         Task<string> GetStringAsync(string uri,
             string authorizationToken = null,
             string authorizationMethod = "Bearer");
-        Task<HttpResponseMessage> PostAsync<T>(string uri,
-            T item,
-            string authorizationToken = null,
+
+        Task<HttpResponseMessage> PostAsync<T>(string uri, 
+            T item, 
+            string authorizationToken = null, 
             string authorizationMethod = "Bearer");
 
-        Task<HttpResponseMessage> DeleteAsync(string uri,
-            string authorizationToken = null,
+        Task<HttpResponseMessage> DeleteAsync(string uri, 
+            string authorizationToken = null, 
             string authorizationMethod = "Bearer");
 
-        Task<HttpResponseMessage> PutAsync<T>(string uri,
-            T item,
-            string authorizationToken = null,
+        Task<HttpResponseMessage> PutAsync<T>(string uri, 
+            T item, string authorizationToken = null, 
             string authorizationMethod = "Bearer");
     }
 }

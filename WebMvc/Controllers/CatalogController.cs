@@ -19,10 +19,10 @@ namespace WebMvc.Controllers
 
         public async Task<IActionResult> Index(int? page, int? brandFilterApplied, int? typesFilterApplied)
         {
-            var itemsOnPage = 8;
+            var itemsOnPage = 10;
 
             var catalog = await _service.GetCatalogItemsAsync(page ?? 0, itemsOnPage, brandFilterApplied, typesFilterApplied);
-            var actualItemsOnPage = Math.Min((int)(catalog.Count - ((page ?? 0) * itemsOnPage)), itemsOnPage);
+
             var vm = new CatalogIndexViewModel
             {
                 CatalogItems = catalog.Data,
@@ -31,7 +31,8 @@ namespace WebMvc.Controllers
                 PaginationInfo = new PaginationInfo
                 {
                     ActualPage = page ?? 0,
-                    ItemsPerPage = actualItemsOnPage,
+                    //ItemsPerPage = itemsOnPage,
+                    ItemsPerPage = catalog.PageSize,
                     TotalItems = catalog.Count,
                     TotalPages = (int)Math.Ceiling((decimal)catalog.Count / itemsOnPage)
                 },
@@ -40,7 +41,6 @@ namespace WebMvc.Controllers
             };
 
             return View(vm);
-
         }
         [Authorize]
         public IActionResult About()

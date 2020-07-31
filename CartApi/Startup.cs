@@ -29,7 +29,7 @@ namespace CartApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
             services.AddTransient<ICartRepository, RedisCartRepository>();
             services.AddSingleton<ConnectionMultiplexer>(cm =>
             {
@@ -40,7 +40,7 @@ namespace CartApi
             });
 
             // prevent from mapping "sub" claim to nameidentifier.
-            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear(); //clearing preexisting security tokens found as part of mcrosrvc
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
             var identityUrl = Configuration["IdentityUrl"];
             services.AddAuthentication(options =>

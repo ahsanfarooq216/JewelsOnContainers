@@ -22,11 +22,10 @@ namespace WebMvc.Infrastructure
                 var filterQs = string.Empty;
                 if (brand.HasValue || type.HasValue)
                 {
-                    var brandQs = (brand.HasValue) ? brand.Value.ToString() : " ";
-                    var typeQs = (type.HasValue) ? type.Value.ToString() : " ";
+                    var brandQs = (brand.HasValue) ? brand.Value.ToString() : "null";
+                    var typeQs = (type.HasValue) ? type.Value.ToString() : "null";
                     filterQs = $"/type/{typeQs}/brand/{brandQs}";
                 }
-
                 return $"{baseUri}items{filterQs}?pageIndex={page}&pageSize={take}";
             }
         }

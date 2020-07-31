@@ -13,6 +13,7 @@ namespace WebMvc.Infrastructure
     public class CustomHttpClient : IHttpClient
     {
         private readonly HttpClient _client;
+
         public CustomHttpClient()
         {
             _client = new HttpClient();
@@ -23,13 +24,18 @@ namespace WebMvc.Infrastructure
             string authorizationMethod = "Bearer")
         {
             var requestMessage = new HttpRequestMessage(HttpMethod.Get, uri);
+            if (authorizationToken != null)
+            {
+                requestMessage.Headers.Authorization = new AuthenticationHeaderValue(authorizationMethod, authorizationToken);
+            }
 
             var response = await _client.SendAsync(requestMessage);
             return await response.Content.ReadAsStringAsync();
 
         }
 
-        private async Task<HttpResponseMessage> DoPostPutAsync<T>(HttpMethod method, string uri, T item, string authorizationToken = null, string authorizationMethod = "Bearer")
+        private async Task<HttpResponseMessage> DoPostPutAsync<T>(HttpMethod method, 
+            string uri, T item, string authorizationToken = null, string authorizationMethod = "Bearer")
         {
             if (method != HttpMethod.Post && method != HttpMethod.Put)
             {
@@ -42,15 +48,11 @@ namespace WebMvc.Infrastructure
             var requestMessage = new HttpRequestMessage(HttpMethod.Post, uri);
 
             requestMessage.Content = new StringContent(JsonConvert.SerializeObject(item), System.Text.Encoding.UTF8, "application/json");
+
             if (authorizationToken != null)
             {
                 requestMessage.Headers.Authorization = new AuthenticationHeaderValue(authorizationMethod, authorizationToken);
             }
-
-            //if (requestId != null)
-            //{
-            //    requestMessage.Headers.Add("x-requestid", requestId);
-            //}
 
             var response = await _client.SendAsync(requestMessage);
 
@@ -66,7 +68,8 @@ namespace WebMvc.Infrastructure
         }
 
 
-        public async Task<HttpResponseMessage> PostAsync<T>(string uri, T item, string authorizationToken = null, string authorizationMethod = "Bearer")
+        public async Task<HttpResponseMessage> PostAsync<T>(string uri, T item, 
+            string authorizationToken = null, string authorizationMethod = "Bearer")
         {
             return await DoPostPutAsync(HttpMethod.Post, uri, item, authorizationToken, authorizationMethod);
         }
@@ -78,15 +81,14 @@ namespace WebMvc.Infrastructure
         public async Task<HttpResponseMessage> DeleteAsync(string uri, string authorizationToken = null, string authorizationMethod = "Bearer")
         {
             var requestMessage = new HttpRequestMessage(HttpMethod.Delete, uri);
-            // SetAuthorizationHeader(requestMessage);
             if (authorizationToken != null)
             {
-
                 requestMessage.Headers.Authorization = new AuthenticationHeaderValue(authorizationMethod, authorizationToken);
-
             }
 
             return await _client.SendAsync(requestMessage);
         }
+
+
     }
 }

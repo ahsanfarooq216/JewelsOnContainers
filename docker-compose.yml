@@ -32,8 +32,10 @@ services:
       dockerfile: Dockerfile
     environment:
       CatalogUrl: http://catalog
-      IdentityUrl: http://172.29.80.1:6700
+      CartUrl: http://cart
+      IdentityUrl: http://172.22.224.1:6700
       CallBackUrl: http://localhost:6811
+      ASPNETCORE_ENVIRONMENT: Development
     ports:
       - "6811:80"
     container_name: webshop
@@ -41,6 +43,8 @@ services:
       - frontend
     depends_on:
       - catalog
+      - cart
+      - tokenserver
 
   tokenserver:
     build:
@@ -64,7 +68,7 @@ services:
       dockerfile: Dockerfile
     image: jewels/cartapi
     environment:
-      IdentityUrl: http://172.29.80.1:6700
+      IdentityUrl: http://172.22.224.1:6700
       ConnectionString: basket.data
     ports:
       - "6812:80"
