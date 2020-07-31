@@ -19,8 +19,7 @@ namespace WebMvc.Controllers
 
         public async Task<IActionResult> Index(int? page, int? brandFilterApplied, int? typesFilterApplied)
         {
-            var itemsOnPage = 8;
-
+            var itemsOnPage = 10;
             var catalog = await _service.GetCatalogItemsAsync(page ?? 0, itemsOnPage, brandFilterApplied, typesFilterApplied);
             var actualItemsOnPage = Math.Min((int)(catalog.Count - ((page ?? 0) * itemsOnPage)), itemsOnPage);
             var vm = new CatalogIndexViewModel
@@ -38,16 +37,12 @@ namespace WebMvc.Controllers
                 BrandFilterApplied = brandFilterApplied ?? 0,
                 TypesFilterApplied = typesFilterApplied ?? 0
             };
-
             return View(vm);
-
         }
         [Authorize]
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";
-
-
             return View();
         }
     }
