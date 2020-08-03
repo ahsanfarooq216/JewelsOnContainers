@@ -33,7 +33,7 @@ services:
     environment:
       CatalogUrl: http://catalog
       CartUrl: http://cart
-      IdentityUrl: http://172.22.224.1:6700
+      IdentityUrl: http://192.168.64.1:6700
       CallBackUrl: http://localhost:6811
       ASPNETCORE_ENVIRONMENT: Development
     ports:
@@ -68,7 +68,7 @@ services:
       dockerfile: Dockerfile
     image: jewels/cartapi
     environment:
-      IdentityUrl: http://172.22.224.1:6700
+      IdentityUrl: http://192.168.64.1:6700
       ConnectionString: basket.data
     ports:
       - "6812:80"
